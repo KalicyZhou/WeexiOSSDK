@@ -911,7 +911,12 @@ do {\
         return CGSizeZero;
     }
     if (isnan(aWidth)) {
-        aWidth = CGFLOAT_MAX;
+        if (!isnan(self.cssNode->style.maxDimensions[CSS_WIDTH])) {
+            aWidth = self.cssNode->style.maxDimensions[CSS_WIDTH];
+        }
+        else {
+            aWidth = CGFLOAT_MAX;
+        }
     }
     aWidth = [attributedStringCpy boundingRectWithSize:CGSizeMake(aWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading context:nil].size.width;
     CTFramesetterRef ctframesetterRef = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)(attributedStringCpy));
