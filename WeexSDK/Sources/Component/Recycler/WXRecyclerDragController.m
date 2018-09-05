@@ -79,12 +79,19 @@
         if (_dragTriggerType == WXRecyclerDragTriggerPan) {
             UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(longPressMethod:)];
             [anchorComponent.view addGestureRecognizer:panGestureRecognizer];
+            panGestureRecognizer.delegate = self;
             
         }else{
             UILongPressGestureRecognizer *longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressMethod:)];
             [anchorComponent.view addGestureRecognizer:longPressGestureRecognizer];
+            longPressGestureRecognizer.delegate = self;
         }
     }
+}
+
+#pragma mark - UIGestureRecognizerDelegate
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    return _isDragable;
 }
 
 #pragma mark - dragMethod
