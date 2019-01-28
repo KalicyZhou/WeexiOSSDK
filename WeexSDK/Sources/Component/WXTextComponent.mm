@@ -968,9 +968,12 @@ do {\
         return CGSizeZero;
     }
     if (isnan(aWidth)) {
-        if (!isnan(self.cssNode->style.maxDimensions[CSS_WIDTH])) {
-            aWidth = self.cssNode->style.maxDimensions[CSS_WIDTH];
+        if (!isnan(self.flexCssNode->getMaxWidth())) {
+            aWidth = self.flexCssNode->getMaxWidth();
         }
+//        if (!isnan(self.cssNode->style.maxDimensions[CSS_WIDTH])) {
+//            aWidth = self.cssNode->style.maxDimensions[CSS_WIDTH];
+//        }
         else {
             aWidth = CGFLOAT_MAX;
         }
