@@ -196,9 +196,26 @@ WX_EXPORT_METHOD(@selector(goForward))
 - (void)loadURL:(NSString *)url
 {
     if (self.webview) {
-        NSURLRequest *request =[NSURLRequest requestWithURL:[NSURL URLWithString:url]];
-        [self.webview loadRequest:request];
+        NSURL *fileURL = [NSURL URLWithString:url];
+        NSURLRequest *request =[NSURLRequest requestWithURL: fileURL];
+        NSDictionary *paramers = [self paramerWithURL:fileURL];
+        if ([paramers[@"ftype"] isEqual:@"pdf"]) {
+            NSData *data = [NSData dataWithContentsOfURL:request.URL];
+            [self.webview loadData:data MIMEType:@"application/pdf" textEncodingName:@"GBK" baseURL:fileURL];
+        } else {
+            [self.webview loadRequest:request];
+        }
     }
+}
+
+-(NSDictionary *)paramerWithURL:(NSURL *) url {
+    NSMutableDictionary *paramer = [[NSMutableDictionary alloc]init];
+    NSURLComponents *urlComponents = [[NSURLComponents alloc] initWithString:url.absoluteString];
+    
+    [urlComponents.queryItems enumerateObjectsUsingBlock:^(NSURLQueryItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [paramer setObject:obj.value forKey:obj.name];
+    }];
+    return paramer;
 }
 
 - (void)reload
