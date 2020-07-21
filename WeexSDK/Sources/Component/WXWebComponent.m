@@ -213,7 +213,7 @@ WX_EXPORT_METHOD(@selector(goForward))
     NSURLComponents *urlComponents = [[NSURLComponents alloc] initWithString:url.absoluteString];
     
     [urlComponents.queryItems enumerateObjectsUsingBlock:^(NSURLQueryItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        [paramer setObject:obj.value forKey:obj.name];
+        [paramer setObject:obj.value?obj.value:@"" forKey:obj.name];
     }];
     return paramer;
 }
